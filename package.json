@@ -1,0 +1,21 @@
+{
+  "name": "browser-permissions",
+  "version": "0.0.1",
+  "description": "An interactive module for handling browser permissions",
+  "source": "./src/scripts/browser-permissions.ts",
+  "main": "dist/main.js",
+  "module": "dist/module.js",
+  "types": "dist/types.d.ts",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build",
+    "check": "npx @biomejs/biome check --apply ./src/"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@biomejs/biome": "1.4.1",
+    "parcel": "^2.10.3"
+  }
+}
