@@ -6,6 +6,7 @@ import { Browser } from "./types";
 // https://developer.mozilla.org/en-US/docs/Web/API/Permissions/query
 // https://developer.mozilla.org/en-US/docs/Web/API/Permissions/revoke
 
+// TODO: make popup configurable.
 const template = (strings, styleOverridesSrc) => `
   <style>
     :host {
@@ -18,12 +19,12 @@ const template = (strings, styleOverridesSrc) => `
 
   ${styleOverridesSrc ? `<link rel="stylesheet" href="${styleOverridesSrc}">` : ""}
 
-  <div class="browser-permissions-modal-content">
-    <div class="browser-permissions-modal-header">
-      <h2 class="browser-permissions-modal-title">Permissions</h2>
-      <button type="button" class="browser-permissions-modal-close">Close</button>
+  <div class="browser-permissions-popup-content">
+    <div class="browser-permissions-popup-header">
+      <h2 class="browser-permissions-popup-title">Permissions</h2>
+      <button type="button" class="browser-permissions-popup-close">Close</button>
     </div>
-    <div class="browser-permissions-modal-body">
+    <div class="browser-permissions-popup-body">
       <slot name="permissions-display"></slot>
       <slot name="permissions-button"></slot>
     </div>
