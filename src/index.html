@@ -12,8 +12,9 @@
 <body>
   <h1>Browser Permissions</h1>
 
-  <browser-permissions>
-    <p>hello world</p>
+  <browser-permissions style-overrides-src="../src/styles/example-style-override.css">
+    <p slot="permissions-display">hello world</p>
+    <button slot="permissions-button">Request Permissions</button>
   </browser-permissions>
 
   <script type="module" src="./scripts/index.ts"></script>

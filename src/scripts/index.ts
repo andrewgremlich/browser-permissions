@@ -1,6 +1,13 @@
-import { BrowserPermissions } from "./browser-permissions";
-import * as PermissionsHelpers from "./permissions-helpers";
+import { BrowserPermissionsComponent } from "./browser-permissions";
 
-customElements.define("browser-permissions", BrowserPermissions);
+export * from "./permissions-helpers";
 
-console.log(PermissionsHelpers);
+const permissions = ['microphone', 'camera', 'geolocation', 'notifications', 'push', 'midi', 'screen-wake-lock']
+
+export function BrowserPermissions(permissionsParam: string[]) {
+  BrowserPermissionsComponent.permissions = permissionsParam;
+
+  customElements.define("browser-permissions", BrowserPermissionsComponent);
+}
+
+BrowserPermissions(permissions);
