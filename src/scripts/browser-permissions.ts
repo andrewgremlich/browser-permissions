@@ -8,23 +8,24 @@ import { Browser } from "./types";
 
 const template = (strings, styleOverridesSrc) => `
   <style>
-    .browser-permissions-modal {
+    :host {
+      position: absolute;
+      bottom: 0;
+      right: 0;
       border: 1px solid black;
     }
   </style>
 
   ${styleOverridesSrc ? `<link rel="stylesheet" href="${styleOverridesSrc}">` : ""}
 
-  <div class="browser-permissions-modal">
-    <div class="browser-permissions-modal-content">
-      <div class="browser-permissions-modal-header">
-        <h2 class="browser-permissions-modal-title">Permissions</h2>
-        <button type="button" class="browser-permissions-modal-close">Close</button>
-      </div>
-      <div class="browser-permissions-modal-body">
-        <slot name="permissions-display"></slot>
-        <slot name="permissions-button"></slot>
-      </div>
+  <div class="browser-permissions-modal-content">
+    <div class="browser-permissions-modal-header">
+      <h2 class="browser-permissions-modal-title">Permissions</h2>
+      <button type="button" class="browser-permissions-modal-close">Close</button>
+    </div>
+    <div class="browser-permissions-modal-body">
+      <slot name="permissions-display"></slot>
+      <slot name="permissions-button"></slot>
     </div>
   </div>
 `
