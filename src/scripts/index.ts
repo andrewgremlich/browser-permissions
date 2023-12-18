@@ -1,10 +1,11 @@
 import { BrowserPermissionsComponent } from "./browser-permissions";
 import { PermissionItem } from "./permission-item";
+import { Permissions } from "./types";
 
 export * from "./permissions-helpers";
 
 // Permissions need to be done this way for typing.
-const permissions = ['microphone', 'camera', 'geolocation', 'notifications', 'push', 'midi', 'screen-wake-lock']
+const permissions: Permissions[] = ['microphone', 'camera', 'geolocatio'];
 
 export function BrowserPermissions(permissionsParam: string[]) {
   BrowserPermissionsComponent.permissions = permissionsParam;

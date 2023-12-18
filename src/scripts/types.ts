@@ -11,7 +11,7 @@ export enum Browser {
 }
 
 // defined here https://searchfox.org/mozilla-central/source/dom/webidl/Permissions.webidl#10
-export const FirefoxPermissions = [
+const FirefoxPermissions = [
   "geolocation",
   "notifications",
   "push",
@@ -22,7 +22,7 @@ export const FirefoxPermissions = [
 ];
 
 // defined here https://chromium.googlesource.com/chromium/src/+/refs/heads/main/third_party/blink/renderer/modules/permissions/permission_descriptor.idl
-export const ChromiumPermissions = [
+const ChromiumPermissions = [
   "geolocation",
   "notifications",
   "push",
@@ -61,7 +61,7 @@ export const ChromiumPermissions = [
 ]
 
 // defined here https://github.com/WebKit/WebKit/blob/main/Source/WebCore/Modules/permissions/PermissionName.idl
-export const WebKitPermissions = [
+const WebKitPermissions = [
   "accelerometer",
   "background-fetch",
   "bluetooth",
@@ -78,3 +78,8 @@ export const WebKitPermissions = [
   "screen-wake-lock",
   "speaker-selection"
 ]
+
+const permissionsSet = new Set([...FirefoxPermissions, ...ChromiumPermissions, ...WebKitPermissions]);
+const PermissionsEnum = ([...permissionsSet]) as const;
+
+export type Permissions = typeof PermissionsEnum[number];
