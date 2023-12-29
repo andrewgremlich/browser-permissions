@@ -12,5 +12,8 @@ export class RequestPermission extends HTMLElement {
     const shadow = this.attachShadow({ mode: "open" });
 
     shadow.innerHTML = template`<p>Request ${this.getAttribute('data-name')}?</p>`;
+
+    // in this component, trigger browser request for permission.
+    // there may need to be another component or feature to trigger with the user tries to activate something.
   }
 }
