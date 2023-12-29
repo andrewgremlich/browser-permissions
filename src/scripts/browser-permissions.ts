@@ -60,7 +60,7 @@ const template = (strings, styleOverridesSrc) => `
   </div>
 `
 
-export class BrowserPermissionsComponent extends HTMLElement {
+export class BrowserPermissions extends HTMLElement {
   static observedAttributes = ['style-overrides-src'];
   static permissions: Permissions[];
 
@@ -73,7 +73,7 @@ export class BrowserPermissionsComponent extends HTMLElement {
     const shadow = this.attachShadow({ mode: "open" });
     const styleOverridesSrc = this.getAttribute("style-overrides-src");
 
-    console.log(BrowserPermissionsComponent.permissions);
+    console.log(BrowserPermissions.permissions);
 
     shadow.innerHTML = template`${styleOverridesSrc}`;
   }

@@ -19,7 +19,7 @@ const FirefoxPermissions = [
   "midi",
   "storage-access", // Defined in https://privacycg.github.io/storage-access/#permissions-integration
   "screen-wake-lock"
-];
+] as const;
 
 // defined here https://chromium.googlesource.com/chromium/src/+/refs/heads/main/third_party/blink/renderer/modules/permissions/permission_descriptor.idl
 const ChromiumPermissions = [
@@ -43,7 +43,6 @@ const ChromiumPermissions = [
   "screen-wake-lock",
   "nfc",
   "display-capture",
-  // Non-standard:
   "accessibility-events",
   "clipboard-read",
   "clipboard-write",
@@ -53,12 +52,11 @@ const ChromiumPermissions = [
   "system-wake-lock",
   "storage-access",
   "window-management",
-  // Alias for 'window-management' (crbug.com/1328581).
   "window-placement",
   "local-fonts",
   "top-level-storage-access",
   "captured-surface-control",
-]
+] as const;
 
 // defined here https://github.com/WebKit/WebKit/blob/main/Source/WebCore/Modules/permissions/PermissionName.idl
 const WebKitPermissions = [
@@ -77,9 +75,13 @@ const WebKitPermissions = [
   "push",
   "screen-wake-lock",
   "speaker-selection"
-]
+] as const;
 
-const permissionsSet = new Set([...FirefoxPermissions, ...ChromiumPermissions, ...WebKitPermissions]);
-const PermissionsEnum = ([...permissionsSet]) as const;
+const dedupe = <T extends string>(arr: T[]) => [...new Set(arr)];
+const allPermissions = dedupe([
+  ...FirefoxPermissions,
+  ...ChromiumPermissions,
+  ...WebKitPermissions,
+]);
 
-export type Permissions = typeof PermissionsEnum[number];
+export type Permissions = typeof allPermissions[number];

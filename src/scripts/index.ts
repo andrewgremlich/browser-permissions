@@ -1,19 +1,19 @@
-import { BrowserPermissionsComponent } from "./browser-permissions";
-import { PermissionItem } from "./permission-item";
+import { BrowserPermissions } from "./browser-permissions";
+import { RequestPermission } from "./permission-item";
 import { Permissions } from "./types";
 
 export * from "./permissions-helpers";
 
 // Permissions need to be done this way for typing.
-const permissions: Permissions[] = ['microphone', 'camera', 'geolocatio'];
+const permissions: Permissions[] = ['microphone', 'camera', 'geolocation'];
 
-export function BrowserPermissions(permissionsParam: string[]) {
-  BrowserPermissionsComponent.permissions = permissionsParam;
+export function getBrowserPermissions(permissionsParam: Permissions[]) {
+  BrowserPermissions.permissions = permissionsParam;
 
-  customElements.define("browser-permissions", BrowserPermissionsComponent);
+  customElements.define("browser-permissions", BrowserPermissions);
 
   // This could be done... but develop secondary.
-  customElements.define("permission-item", PermissionItem);
+  // customElements.define("request-permission", RequestPermission);
 }
 
-BrowserPermissions(permissions);
+getBrowserPermissions(permissions);
