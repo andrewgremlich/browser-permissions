@@ -56,7 +56,7 @@ const template = (styleOverridesSrc: string | null, permissionsRequest: Permissi
     </div>
     <div class="browser-permissions-popup-body">
       <slot name="permissions-display"></slot>
-      <button type="button">Grant All</button>
+      <button type="button" id="grant-all-permissions">Grant All</button>
 
       ${permissionsRequest ? permissionsRequest.map((permission: Permissions) => {
     return `<request-permission data-name="${permission}"></request-permission>`;
@@ -79,6 +79,10 @@ export class BrowserPermissions extends HTMLElement {
     const styleOverridesSrc = this.getAttribute("style-overrides-src");
 
     shadow.innerHTML = template(styleOverridesSrc, BrowserPermissions.permissions);
+
+    shadow.querySelector("#grant-all-permissions")?.addEventListener("click", () => {
+      this.grantAllPermissions();
+    });
   }
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
@@ -88,6 +92,11 @@ export class BrowserPermissions extends HTMLElement {
   // Use the Apple model on what permissions are requested
   usedPermissionsDisplay() {
 
+  }
+
+  grantAllPermissions() {
+    // trigger browser request for permission.
+    console.log('grantAllPermissions')
   }
 
   detectBrowser(): Browser {

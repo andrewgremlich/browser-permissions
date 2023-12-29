@@ -1,6 +1,7 @@
 export interface PermissionsResponse {
   name: string;
   allowed: boolean;
+  error?: 'Not implemented';
 }
 
 export enum Browser {
@@ -77,11 +78,4 @@ export const WebKitPermissions = [
   "speaker-selection"
 ] as const;
 
-const dedupe = (arr: string[]) => [...new Set(arr)];
-const allPermissions = dedupe([
-  ...FirefoxPermissions,
-  ...ChromiumPermissions,
-  ...WebKitPermissions,
-]);
-
-export type Permissions = typeof allPermissions[number];
+export type Permissions = typeof WebKitPermissions[number] | typeof FirefoxPermissions[number] | typeof ChromiumPermissions[number];

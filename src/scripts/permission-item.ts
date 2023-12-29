@@ -1,5 +1,10 @@
-const template = (strings, permissionName) => {
-  return `${strings[0]}${permissionName}${strings[1]}`;
+import { Permissions } from "./types";
+
+const template = (dataName: string) => {
+  return `
+  <p>Request ${dataName}?</p>
+  <button type="button" data-name"${dataName}" class="permission-grant">Grant</button>
+  `;
 }
 
 export class RequestPermission extends HTMLElement {
@@ -10,10 +15,25 @@ export class RequestPermission extends HTMLElement {
 
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "open" });
+    const reasonForRequest = this.getAttribute("reason-for-request");
 
-    shadow.innerHTML = template`<p>Request ${this.getAttribute('data-name')}? <button type="button">Grant</button></p>`;
+    if (!this.getAttribute('data-name')) {
+      throw new Error('data-name attribute is required on permission-item element.');
+    }
 
-    // in this component, trigger browser request for permission.
-    // there may need to be another component or feature to trigger with the user tries to activate something.
+    shadow.innerHTML = template(this.getAttribute('data-name') ?? '');
+
+    // there may need to be another component or feature to trigger with the user
+    // tries to activate something that requires permissions.
+    const button = shadow.querySelector('.permission-grant');
+
+    button?.addEventListener('click', () => {
+      this.grantPermission(this.getAttribute('data-name') as Permissions);
+    });
+  }
+
+  grantPermission(string: Permissions) {
+    // trigger browser request for permission.
+    console.log('grantPermission', string)
   }
 }
