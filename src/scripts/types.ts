@@ -1,9 +1,3 @@
-export interface PermissionsResponse {
-  name: string;
-  allowed: boolean;
-  error?: 'Not implemented';
-}
-
 export enum Browser {
   Firefox = "Firefox",
   Chromium = "Chromium",
@@ -79,3 +73,9 @@ export const WebKitPermissions = [
 ] as const;
 
 export type Permissions = typeof WebKitPermissions[number] | typeof FirefoxPermissions[number] | typeof ChromiumPermissions[number];
+
+export interface PermissionsResponse {
+  name: Permissions;
+  allowed: boolean;
+  error?: 'Not implemented';
+}

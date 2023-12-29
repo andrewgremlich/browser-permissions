@@ -30,9 +30,9 @@ export async function getScreenCapturePermissions(): Promise<PermissionsResponse
     for (const track of stream.getTracks()) {
       track.stop();
     }
-    return { allowed: true, name: "screen-capture" };
+    return { allowed: true, name: "display-capture" };
   }
-  return { allowed: false, name: "screen-capture" };
+  return { allowed: false, name: "display-capture" };
 }
 
 export async function getNotificationPermissions(): Promise<PermissionsResponse> {
@@ -58,7 +58,7 @@ export async function getClipboardPermissions(): Promise<PermissionsResponse> {
   const permission = await navigator.permissions.query({
     name: "clipboard-read" as PermissionName,
   });
-  return { name: 'clipboard', allowed: permission.state === "granted" };
+  return { name: 'clipboard-read', allowed: permission.state === "granted" };
 }
 
 export async function getMidiPermissions(): Promise<PermissionsResponse> {
@@ -74,6 +74,8 @@ export const getPermissionQuery = (permissionName: Permissions): () => Promise<P
     geolocation: getGeolocationPermissions,
     midi: getMidiPermissions,
     "clipboard-read": getClipboardPermissions,
+    'display-capture': getScreenCapturePermissions,
+    'clipboard-write': () => Promise.resolve({ name: 'clipboard-write', allowed: false, error: 'Not implemented' }),
     push: () => Promise.resolve({ name: 'push', allowed: false, error: 'Not implemented' }),
     'background-fetch': () => Promise.resolve({ name: 'background-fetch', allowed: false, error: 'Not implemented' }),
     'background-sync': () => Promise.resolve({ name: 'background-sync', allowed: false, error: 'Not implemented' }),
@@ -83,9 +85,7 @@ export const getPermissionQuery = (permissionName: Permissions): () => Promise<P
     magnetometer: () => Promise.resolve({ name: 'magnetometer', allowed: false, error: 'Not implemented' }),
     'screen-wake-lock': () => Promise.resolve({ name: 'screen-wake-lock', allowed: false, error: 'Not implemented' }),
     nfc: () => Promise.resolve({ name: 'nfc', allowed: false, error: 'Not implemented' }),
-    'display-capture': getScreenCapturePermissions,
     'accessibility-events': () => Promise.resolve({ name: 'accessibility-events', allowed: false, error: 'Not implemented' }),
-    'clipboard-write': () => Promise.resolve({ name: 'clipboard-write', allowed: false, error: 'Not implemented' }),
     'payment-handler': () => Promise.resolve({ name: 'payment-handler', allowed: false, error: 'Not implemented' }),
     'idle-detection': () => Promise.resolve({ name: 'idle-detection', allowed: false, error: 'Not implemented' }),
     'periodic-background-sync': () => Promise.resolve({ name: 'periodic-background-sync', allowed: false, error: 'Not implemented' }),
