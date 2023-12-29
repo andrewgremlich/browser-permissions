@@ -11,7 +11,7 @@ export enum Browser {
 }
 
 // defined here https://searchfox.org/mozilla-central/source/dom/webidl/Permissions.webidl#10
-const FirefoxPermissions = [
+export const FirefoxPermissions = [
   "geolocation",
   "notifications",
   "push",
@@ -22,7 +22,7 @@ const FirefoxPermissions = [
 ] as const;
 
 // defined here https://chromium.googlesource.com/chromium/src/+/refs/heads/main/third_party/blink/renderer/modules/permissions/permission_descriptor.idl
-const ChromiumPermissions = [
+export const ChromiumPermissions = [
   "geolocation",
   "notifications",
   "push",
@@ -59,7 +59,7 @@ const ChromiumPermissions = [
 ] as const;
 
 // defined here https://github.com/WebKit/WebKit/blob/main/Source/WebCore/Modules/permissions/PermissionName.idl
-const WebKitPermissions = [
+export const WebKitPermissions = [
   "accelerometer",
   "background-fetch",
   "bluetooth",
@@ -77,7 +77,7 @@ const WebKitPermissions = [
   "speaker-selection"
 ] as const;
 
-const dedupe = <T extends string>(arr: T[]) => [...new Set(arr)];
+const dedupe = (arr: string[]) => [...new Set(arr)];
 const allPermissions = dedupe([
   ...FirefoxPermissions,
   ...ChromiumPermissions,

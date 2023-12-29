@@ -11,7 +11,7 @@ export class RequestPermission extends HTMLElement {
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "open" });
 
-    shadow.innerHTML = template`<p>Request ${this.getAttribute('data-name')}?</p>`;
+    shadow.innerHTML = template`<p>Request ${this.getAttribute('data-name')}? <button type="button">Grant</button></p>`;
 
     // in this component, trigger browser request for permission.
     // there may need to be another component or feature to trigger with the user tries to activate something.
