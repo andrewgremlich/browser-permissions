@@ -7,7 +7,8 @@ import { Browser, Permissions } from "./types";
 // https://developer.mozilla.org/en-US/docs/Web/API/Permissions/revoke
 
 // TODO: make popup position configurable.
-const template = (strings, styleOverridesSrc) => `
+const template = (strings, styleOverridesSrc, permissionsRequest) => {
+  return `
   <style>
     :host {
       position: absolute;
@@ -56,9 +57,13 @@ const template = (strings, styleOverridesSrc) => `
     <div class="browser-permissions-popup-body">
       <slot name="permissions-display"></slot>
       <slot name="permissions-button"></slot>
+
+      ${permissionsRequest ? permissionsRequest.map((permission) => {
+    return `<request-permission data-name="${permission}"></request-permission>`;
+  }).join("") : ""}
     </div>
   </div>
-`
+`}
 
 export class BrowserPermissions extends HTMLElement {
   static observedAttributes = ['style-overrides-src'];
@@ -73,9 +78,7 @@ export class BrowserPermissions extends HTMLElement {
     const shadow = this.attachShadow({ mode: "open" });
     const styleOverridesSrc = this.getAttribute("style-overrides-src");
 
-    console.log(BrowserPermissions.permissions);
-
-    shadow.innerHTML = template`${styleOverridesSrc}`;
+    shadow.innerHTML = template`${styleOverridesSrc}${BrowserPermissions.permissions}`;
   }
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {

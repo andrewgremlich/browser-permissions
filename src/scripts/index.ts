@@ -7,13 +7,11 @@ export * from "./permissions-helpers";
 // Permissions need to be done this way for typing.
 const permissions: Permissions[] = ['microphone', 'camera', 'geolocation'];
 
-export function getBrowserPermissions(permissionsParam: Permissions[]) {
+export function makeBrowserPermissions(permissionsParam: Permissions[]) {
   BrowserPermissions.permissions = permissionsParam;
 
   customElements.define("browser-permissions", BrowserPermissions);
-
-  // This could be done... but develop secondary.
-  // customElements.define("request-permission", RequestPermission);
+  customElements.define("request-permission", RequestPermission);
 }
 
-getBrowserPermissions(permissions);
+makeBrowserPermissions(permissions);
