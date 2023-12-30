@@ -1,5 +1,6 @@
 import { getPermissionIcon } from "./icons";
 import { getPermissionQuery } from "./permissions-helpers";
+import { getPermissionsState } from "./permissions-helpers/helpers";
 import { Permissions } from "./types";
 
 const template = (dataName: string, isAllowed?: boolean) => {
@@ -39,7 +40,8 @@ export class RequestPermission extends HTMLElement {
     this.#permissionName = permissionName;
     this.#shadow = shadow;
 
-    await this.getPermissionStatus();
+    const permissionState = await getPermissionsState(permissionName)();
+    this.#isAllowed = permissionState.allowed;
 
     this.render();
 
@@ -52,24 +54,10 @@ export class RequestPermission extends HTMLElement {
 
   async grantPermission(string: Permissions) {
     const result = await getPermissionQuery(string)();
-
     this.#isAllowed = result.allowed;
 
-    await this.getPermissionStatus();
-  }
-
-  async getPermissionStatus() {
-    const permissionStatus = await navigator.permissions.query({
-      name: (this.#permissionName ?? "") as PermissionName,
-    });
-
-    if (permissionStatus.state === "granted") {
-      this.#isAllowed = true;
-    } else if (permissionStatus.state === "denied") {
-      this.#isAllowed = false;
-    }
-
-    this.render();
+    const permissionState = await getPermissionsState(this.#permissionName)();
+    this.#isAllowed = permissionState.allowed;
   }
 
   render() {

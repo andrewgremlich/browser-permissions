@@ -4,7 +4,8 @@ import {
   getCameraPermissions,
   getMicrophonePermissions,
   getNotificationPermissions,
-  getPermissionsFunctionFromNavigator,
+  getPermissionsState,
+  getGeolocationPermissions,
 } from "./helpers";
 
 export const getPermissionQuery = (
@@ -15,13 +16,15 @@ export const getPermissionQuery = (
       camera: getCameraPermissions,
       microphone: getMicrophonePermissions,
       notifications: getNotificationPermissions,
-      geolocation: getPermissionsFunctionFromNavigator("geolocation"),
-      midi: getPermissionsFunctionFromNavigator("midi"),
-      "clipboard-read": getPermissionsFunctionFromNavigator("clipboard-read"),
+      geolocation: getGeolocationPermissions,
+      midi: getPermissionsState("midi"),
+      "clipboard-read":
+        getPermissionsState("clipboard-read"),
       "display-capture": getScreenCapturePermissions,
       "persistent-storage":
-        getPermissionsFunctionFromNavigator("persistent-storage"),
-      "clipboard-write": getPermissionsFunctionFromNavigator("clipboard-write"),
+        getPermissionsState("persistent-storage"),
+      "clipboard-write":
+        getPermissionsState("clipboard-write"),
       push: () =>
         Promise.resolve({
           name: "push",
@@ -40,9 +43,9 @@ export const getPermissionQuery = (
           allowed: false,
           error: "Not implemented",
         }),
-      accelerometer: getPermissionsFunctionFromNavigator("accelerometer"),
-      gyroscope: getPermissionsFunctionFromNavigator("gyroscope"),
-      magnetometer: getPermissionsFunctionFromNavigator("magnetometer"),
+      accelerometer: getPermissionsState("accelerometer"),
+      gyroscope: getPermissionsState("gyroscope"),
+      magnetometer: getPermissionsState("magnetometer"),
       "screen-wake-lock": () =>
         Promise.resolve({
           name: "screen-wake-lock",

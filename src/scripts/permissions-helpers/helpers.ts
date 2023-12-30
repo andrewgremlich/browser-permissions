@@ -35,12 +35,22 @@ export async function getScreenCapturePermissions(): Promise<PermissionsResponse
   return { allowed: false, name: "display-capture" };
 }
 
+export async function getGeolocationPermissions(): Promise<PermissionsResponse> {
+  await navigator.geolocation.getCurrentPosition((success) => {
+    console.log(success);
+  }, (error) => {
+    console.log(error);
+  });
+
+  return { allowed: true, name: "geolocation" };
+}
+
 export async function getNotificationPermissions(): Promise<PermissionsResponse> {
   const permission = await Notification.requestPermission();
   return { name: "notifications", allowed: permission === "granted" };
 }
 
-export const getPermissionsFunctionFromNavigator =
+export const getPermissionsState =
   (name: Permissions) => async (): Promise<PermissionsResponse> => {
     const permission = await navigator.permissions.query({
       name: name as PermissionName,
