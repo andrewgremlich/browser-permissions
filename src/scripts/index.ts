@@ -1,5 +1,6 @@
 import { BrowserPermissions } from "./browser-permissions";
 import { RequestPermission } from "./permission-item";
+import { getCameraPermissions } from "./permissions-helpers/helpers";
 import { Permissions } from "./types";
 
 export * from "./permissions-helpers";
