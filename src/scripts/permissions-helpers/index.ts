@@ -1,13 +1,10 @@
 import { Permissions, PermissionsResponse } from "../types";
 import {
-  getMidiPermissions,
-  getClipboardPermissions,
   getScreenCapturePermissions,
   getCameraPermissions,
   getMicrophonePermissions,
   getNotificationPermissions,
-  getGeolocationPermissions,
-  getPersistentStoragePermissions,
+  getPermissionsFunctionFromNavigator,
 } from "./helpers";
 
 export const getPermissionQuery = (
@@ -18,17 +15,13 @@ export const getPermissionQuery = (
       camera: getCameraPermissions,
       microphone: getMicrophonePermissions,
       notifications: getNotificationPermissions,
-      geolocation: getGeolocationPermissions,
-      midi: getMidiPermissions,
-      "clipboard-read": getClipboardPermissions,
+      geolocation: getPermissionsFunctionFromNavigator("geolocation"),
+      midi: getPermissionsFunctionFromNavigator("midi"),
+      "clipboard-read": getPermissionsFunctionFromNavigator("clipboard-read"),
       "display-capture": getScreenCapturePermissions,
-      "persistent-storage": getPersistentStoragePermissions,
-      "clipboard-write": () =>
-        Promise.resolve({
-          name: "clipboard-write",
-          allowed: false,
-          error: "Not implemented",
-        }),
+      "persistent-storage":
+        getPermissionsFunctionFromNavigator("persistent-storage"),
+      "clipboard-write": getPermissionsFunctionFromNavigator("clipboard-write"),
       push: () =>
         Promise.resolve({
           name: "push",
@@ -47,24 +40,9 @@ export const getPermissionQuery = (
           allowed: false,
           error: "Not implemented",
         }),
-      accelerometer: () =>
-        Promise.resolve({
-          name: "accelerometer",
-          allowed: false,
-          error: "Not implemented",
-        }),
-      gyroscope: () =>
-        Promise.resolve({
-          name: "gyroscope",
-          allowed: false,
-          error: "Not implemented",
-        }),
-      magnetometer: () =>
-        Promise.resolve({
-          name: "magnetometer",
-          allowed: false,
-          error: "Not implemented",
-        }),
+      accelerometer: getPermissionsFunctionFromNavigator("accelerometer"),
+      gyroscope: getPermissionsFunctionFromNavigator("gyroscope"),
+      magnetometer: getPermissionsFunctionFromNavigator("magnetometer"),
       "screen-wake-lock": () =>
         Promise.resolve({
           name: "screen-wake-lock",

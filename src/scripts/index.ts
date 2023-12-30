@@ -6,7 +6,12 @@ import { Permissions } from "./types";
 export * from "./permissions-helpers";
 
 // Permissions need to be done this way for typing.
-const permissions: Permissions[] = ['microphone', 'camera', 'geolocation'];
+const permissions: Permissions[] = [
+  "microphone",
+  "camera",
+  "geolocation",
+  "clipboard-read",
+];
 
 export function makeBrowserPermissions(permissionsParam: Permissions[]) {
   BrowserPermissions.permissions = permissionsParam;

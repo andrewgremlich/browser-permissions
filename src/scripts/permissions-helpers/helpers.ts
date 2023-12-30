@@ -1,4 +1,4 @@
-import { PermissionsResponse } from "../types";
+import { Permissions, PermissionsResponse } from "../types";
 
 export async function getCameraPermissions(): Promise<PermissionsResponse> {
   const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -37,31 +37,14 @@ export async function getScreenCapturePermissions(): Promise<PermissionsResponse
 
 export async function getNotificationPermissions(): Promise<PermissionsResponse> {
   const permission = await Notification.requestPermission();
-  return { name: 'notifications', allowed: permission === "granted" };
+  return { name: "notifications", allowed: permission === "granted" };
 }
 
-export async function getGeolocationPermissions(): Promise<PermissionsResponse> {
-  const permission = await navigator.permissions.query({
-    name: "geolocation",
-  });
-  return { name: 'geolocation', allowed: permission.state === "granted" };
-}
+export const getPermissionsFunctionFromNavigator =
+  (name: Permissions) => async (): Promise<PermissionsResponse> => {
+    const permission = await navigator.permissions.query({
+      name: name as PermissionName,
+    });
 
-export async function getPersistentStoragePermissions(): Promise<PermissionsResponse> {
-  const permission = await navigator.permissions.query({
-    name: "persistent-storage",
-  });
-  return { name: 'geolocation', allowed: permission.state === "granted" };
-}
-
-export async function getClipboardPermissions(): Promise<PermissionsResponse> {
-  const permission = await navigator.permissions.query({
-    name: "clipboard-read" as PermissionName,
-  });
-  return { name: 'clipboard-read', allowed: permission.state === "granted" };
-}
-
-export async function getMidiPermissions(): Promise<PermissionsResponse> {
-  const permission = await navigator.permissions.query({ name: "midi" as PermissionName });
-  return { name: 'midi', allowed: permission.state === "granted" };
-}
+    return { name, allowed: permission.state === "granted" };
+  };
