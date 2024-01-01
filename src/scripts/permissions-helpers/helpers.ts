@@ -85,3 +85,22 @@ export const getMidiAccess = async (): Promise<PermissionsResponse> => {
   }
 };
 
+export async function getClipboardReadPermissions(): Promise<PermissionsResponse> {
+  try {
+    await navigator.clipboard.readText();
+    return { allowed: true, name: "clipboard-read" };
+  } catch (error) {
+    return { allowed: false, name: "clipboard-read" };
+  }
+}
+
+export async function getClipboardWritePermissions(): Promise<PermissionsResponse> {
+  try {
+    await navigator.clipboard.writeText(
+      "required string input for getting clipboard write permissions",
+    );
+    return { allowed: true, name: "clipboard-write" };
+  } catch (error) {
+    return { allowed: false, name: "clipboard-write" };
+  }
+}
