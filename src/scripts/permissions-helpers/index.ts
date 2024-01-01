@@ -6,6 +6,7 @@ import {
   getNotificationPermissions,
   getPermissionsState,
   getGeolocationPermissions,
+  getMidiAccess,
 } from "./helpers";
 
 export const getPermissionQuery = (
@@ -17,7 +18,7 @@ export const getPermissionQuery = (
       microphone: getMicrophonePermissions,
       notifications: getNotificationPermissions,
       geolocation: getGeolocationPermissions,
-      midi: getPermissionsState("midi"),
+      midi: getMidiAccess,
       "clipboard-read":
         getPermissionsState("clipboard-read"),
       "display-capture": getScreenCapturePermissions,

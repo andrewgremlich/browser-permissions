@@ -35,19 +35,28 @@ export async function getScreenCapturePermissions(): Promise<PermissionsResponse
   return { allowed: false, name: "display-capture" };
 }
 
-export async function getGeolocationPermissions(): Promise<PermissionsResponse> {
-  await navigator.geolocation.getCurrentPosition((success) => {
-    console.log(success);
-  }, (error) => {
-    console.log(error);
+export function getGeolocationPermissions(): Promise<PermissionsResponse> {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+      () => {
+        resolve({ allowed: true, name: "geolocation" });
+      },
+      () => {
+        reject({ allowed: false, name: "geolocation" });
+      },
+    );
   });
-
-  return { allowed: true, name: "geolocation" };
 }
 
 export async function getNotificationPermissions(): Promise<PermissionsResponse> {
-  const permission = await Notification.requestPermission();
-  return { name: "notifications", allowed: permission === "granted" };
+  console.log("requesting notifications");
+  try {
+    const permission = await Notification.requestPermission();
+    return { name: "notifications", allowed: permission === "granted" };
+  } catch (error) {
+    console.error(error);
+    return { name: "notifications", allowed: false };
+  }
 }
 
 export const getPermissionsState =
@@ -56,5 +65,23 @@ export const getPermissionsState =
       name: name as PermissionName,
     });
 
-    return { name, allowed: permission.state === "granted" };
+    return {
+      name,
+      allowed:
+        permission.state === "granted"
+          ? true
+          : permission.state === "denied"
+            ? false
+            : undefined,
+    };
   };
+
+export const getMidiAccess = async (): Promise<PermissionsResponse> => {
+  try {
+    const access = await navigator.requestMIDIAccess();
+    return { name: "midi", allowed: true };
+  } catch (error) {
+    return { name: "midi", allowed: false };
+  }
+};
+

@@ -5,16 +5,47 @@ import { Permissions } from "./types";
 
 const template = (dataName: string, isAllowed?: boolean) => {
   return `
-  <p>Request ${dataName}? ${getPermissionIcon(dataName as Permissions)}</p>
-  <button ${
-    isAllowed === undefined ? "" : "disabled"
-  } type="button" data-name"${dataName}" class="permission-grant">${
-    isAllowed === undefined ? "Trigger" : isAllowed ? "Granted" : "Denied"
-  }</button>
+  <style>
+    .request-permission {
+      border: 1px solid black;
+      border-radius: 15px;
+      padding: 10px;
+
+      background-color: white;
+      // position: absolute;
+    }
+
+    .permission-title {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+
+      & > svg {
+        margin-right: 10px;
+      }
+    }
+
+    p {
+      margin: 0;
+    }
+  </style>
+
+  <div class="request-permission">
+    <div class="permission-title">
+      ${getPermissionIcon(dataName as Permissions)} <p>Trigger ${dataName}?</p>
+    </div>
+    <button ${
+      isAllowed === undefined ? "" : "disabled"
+    } type="button" data-name"${dataName}" class="permission-trigger">${
+      isAllowed === undefined ? "Trigger" : isAllowed ? "Granted" : "Denied"
+    }</button>
+  </div>
   `;
 };
 
 export class RequestPermission extends HTMLElement {
+  static observedAttributes = ["request-reason", "permission-name"];
+
   #permissionName!: Permissions;
   #isAllowed?: boolean = undefined;
   #shadow!: ShadowRoot;
@@ -26,14 +57,14 @@ export class RequestPermission extends HTMLElement {
 
   async connectedCallback() {
     const shadow = this.attachShadow({ mode: "open" });
-    const reasonForRequest = this.getAttribute("data-reason-for-request");
+    const reasonForRequest = this.getAttribute("request-reason");
     const permissionName: Permissions | null = this.getAttribute(
-      "data-name",
+      "permission-name",
     ) as Permissions;
 
     if (!permissionName) {
       throw new Error(
-        "data-name attribute is required on permission-item element.",
+        "'permission' attribute is required on permission-item element.",
       );
     }
 
@@ -47,17 +78,20 @@ export class RequestPermission extends HTMLElement {
 
     // there may need to be another component or feature to trigger with the user
     // tries to activate something that requires permissions.
-    shadow.querySelector(".permission-grant")?.addEventListener("click", () => {
-      this.grantPermission(permissionName);
-    });
+    shadow
+      .querySelector(".permission-trigger")
+      ?.addEventListener("click", () => this.triggerPermission(permissionName));
   }
 
-  async grantPermission(string: Permissions) {
+  async triggerPermission(string: Permissions) {
     const result = await getPermissionQuery(string)();
+
     this.#isAllowed = result.allowed;
 
     const permissionState = await getPermissionsState(this.#permissionName)();
     this.#isAllowed = permissionState.allowed;
+
+    this.render();
   }
 
   render() {

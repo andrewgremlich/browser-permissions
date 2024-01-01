@@ -11,61 +11,32 @@ const template = (styleOverridesSrc: string | null, permissionsRequest: Permissi
   return `
   <style>
     :host {
-      position: absolute;
-      bottom: 10px;
+      position: fixed;
+      // bottom: 10px;
       right: 10px;
-      border: 1px solid rgba(0, 0, 0, 0.2);
-      border-radius: 5px;
-      background-color: white;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       z-index: 100000;
+      height: 75px;
+      width: 200px;
     }
 
-    .browser-permissions-popup-content {
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
+    .permissions-container {
+      // position: relative;
+      width: 100%;
       height: 100%;
-    }
-
-    .browser-permissions-popup-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-
-      & h2 {
-        margin: 0;
-      }
-
-      & button {
-        border: none;
-        background: none;
-        padding: 0;
-        cursor: pointer;
-      }
     }
   </style>
 
   ${styleOverridesSrc ? `<link rel="stylesheet" href="${styleOverridesSrc}">` : ""}
 
-  <div class="browser-permissions-popup-content">
-    <div class="browser-permissions-popup-header">
-      <h2 class="browser-permissions-popup-title">Permissions</h2>
-      <button type="button" class="browser-permissions-popup-close"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minimize-2"><polyline points="4 14 10 14 10 20"></polyline><polyline points="20 10 14 10 14 4"></polyline><line x1="14" y1="10" x2="21" y2="3"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg></button>
-    </div>
-    <div class="browser-permissions-popup-body">
-      <!-- <slot name="permissions-display"></slot> -->
-
-      ${permissionsRequest ? permissionsRequest.map((permission: Permissions) => {
-    return `<request-permission data-name="${permission}"></request-permission>`;
-  }).join("") : ""}
-    </div>
+  <div class="permissions-container">
+    ${permissionsRequest ? permissionsRequest.map((permission: Permissions) => {
+      return `<request-permission permission-name="${permission}"></request-permission>`;
+    }).join("") : ""}
   </div>
 `}
 
 export class BrowserPermissions extends HTMLElement {
-  static observedAttributes = ['style-overrides-src'];
+  static observedAttributes = ['style-overrides-src', 'browser-position'];
   static permissions: Permissions[];
 
   // biome-ignore lint/complexity/noUselessConstructor: This IS needed for HTMLElement inheritance
@@ -76,17 +47,13 @@ export class BrowserPermissions extends HTMLElement {
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "open" });
     const styleOverridesSrc = this.getAttribute("style-overrides-src");
+    const positionInBrowser = this.getAttribute("browser-position");
 
     shadow.innerHTML = template(styleOverridesSrc, BrowserPermissions.permissions);
   }
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     // console.log(name, oldValue, newValue);
-  }
-
-  // Use the Apple model on what permissions are requested
-  usedPermissionsDisplay() {
-
   }
 
   detectBrowser(): Browser {

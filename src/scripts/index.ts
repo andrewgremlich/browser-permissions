@@ -1,16 +1,17 @@
 import { BrowserPermissions } from "./browser-permissions";
-import { RequestPermission } from "./permission-item";
-import { getCameraPermissions } from "./permissions-helpers/helpers";
+import { RequestPermission } from "./request-permission";
 import { Permissions } from "./types";
 
 export * from "./permissions-helpers";
 
 // Permissions need to be done this way for typing.
+// TODO: I should provide a way to do it through HTML if the user wants to.
+// TODO: There's not really any typing for attributes on web components. Perhaps there's a way?
+// TOOD: UX to trigger all permissions at once.
 const permissions: Permissions[] = [
   "microphone",
   "camera",
-  "geolocation",
-  "clipboard-read",
+  "geolocation"
 ];
 
 export function makeBrowserPermissions(permissionsParam: Permissions[]) {
