@@ -104,3 +104,25 @@ export async function getClipboardWritePermissions(): Promise<PermissionsRespons
     return { allowed: false, name: "clipboard-write" };
   }
 }
+
+// https://developer.mozilla.org/en-US/docs/Web/API/Storage_API
+// https://developer.mozilla.org/en-US/docs/Web/API/Storage_Access_API/Using
+export async function getStorageAccessPermissions(): Promise<PermissionsResponse> {
+  try {
+    await document.requestStorageAccess();
+    return { allowed: true, name: "storage-access" };
+  } catch (error) {
+    return { allowed: false, name: "storage-access" };
+  }
+}
+
+export const getWindowManagementPermissions: (
+  permissionName: "window-management" | "window-placement",
+) => () => Promise<PermissionsResponse> = (permissionName) => async () => {
+  try {
+    await window.getScreenDetails();
+    return { allowed: true, name: permissionName };
+  } catch (error) {
+    return { allowed: false, name: permissionName };
+  }
+};

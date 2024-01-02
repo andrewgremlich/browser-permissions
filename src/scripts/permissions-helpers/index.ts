@@ -4,11 +4,12 @@ import {
   getCameraPermissions,
   getMicrophonePermissions,
   getNotificationPermissions,
-  getPermissionsState,
   getGeolocationPermissions,
   getMidiAccess,
   getClipboardReadPermissions,
   getClipboardWritePermissions,
+  getWindowManagementPermissions,
+  getStorageAccessPermissions,
 } from "./helpers";
 
 export const getPermissionQuery = (
@@ -24,9 +25,32 @@ export const getPermissionQuery = (
       "display-capture": getScreenCapturePermissions,
       "clipboard-read": getClipboardReadPermissions,
       "clipboard-write": getClipboardWritePermissions,
-      "persistent-storage": () =>
+      "window-management": getWindowManagementPermissions("window-management"),
+      "window-placement": getWindowManagementPermissions("window-placement"),
+      "persistent-storage": getStorageAccessPermissions,
+      "top-level-storage-access": getStorageAccessPermissions,
+      "storage-access": getStorageAccessPermissions,
+      accelerometer: () =>
         Promise.resolve({
-          name: "persistent-storage",
+          name: "accelerometer",
+          allowed: false,
+          error: "Not implemented",
+        }),
+      gyroscope: () =>
+        Promise.resolve({
+          name: "gyroscope",
+          allowed: false,
+          error: "Not implemented",
+        }),
+      magnetometer: () =>
+        Promise.resolve({
+          name: "magnetometer",
+          allowed: false,
+          error: "Not implemented",
+        }),
+      "ambient-light-sensor": () =>
+        Promise.resolve({
+          name: "ambient-light-sensor",
           allowed: false,
           error: "Not implemented",
         }),
@@ -48,21 +72,9 @@ export const getPermissionQuery = (
           allowed: false,
           error: "Not implemented",
         }),
-      accelerometer: () =>
+      "periodic-background-sync": () =>
         Promise.resolve({
-          name: "accelerometer",
-          allowed: false,
-          error: "Not implemented",
-        }),
-      gyroscope: () =>
-        Promise.resolve({
-          name: "gyroscope",
-          allowed: false,
-          error: "Not implemented",
-        }),
-      magnetometer: () =>
-        Promise.resolve({
-          name: "magnetometer",
+          name: "periodic-background-sync",
           allowed: false,
           error: "Not implemented",
         }),
@@ -96,45 +108,15 @@ export const getPermissionQuery = (
           allowed: false,
           error: "Not implemented",
         }),
-      "periodic-background-sync": () =>
-        Promise.resolve({
-          name: "periodic-background-sync",
-          allowed: false,
-          error: "Not implemented",
-        }),
       "system-wake-lock": () =>
         Promise.resolve({
           name: "system-wake-lock",
           allowed: false,
           error: "Not implemented",
         }),
-      "storage-access": () =>
-        Promise.resolve({
-          name: "storage-access",
-          allowed: false,
-          error: "Not implemented",
-        }),
-      "window-management": () =>
-        Promise.resolve({
-          name: "window-management",
-          allowed: false,
-          error: "Not implemented",
-        }),
-      "window-placement": () =>
-        Promise.resolve({
-          name: "window-placement",
-          allowed: false,
-          error: "Not implemented",
-        }),
       "local-fonts": () =>
         Promise.resolve({
           name: "local-fonts",
-          allowed: false,
-          error: "Not implemented",
-        }),
-      "top-level-storage-access": () =>
-        Promise.resolve({
-          name: "top-level-storage-access",
           allowed: false,
           error: "Not implemented",
         }),
@@ -147,12 +129,6 @@ export const getPermissionQuery = (
       "speaker-selection": () =>
         Promise.resolve({
           name: "speaker-selection",
-          allowed: false,
-          error: "Not implemented",
-        }),
-      "ambient-light-sensor": () =>
-        Promise.resolve({
-          name: "ambient-light-sensor",
           allowed: false,
           error: "Not implemented",
         }),
