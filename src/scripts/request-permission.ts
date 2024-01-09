@@ -7,12 +7,14 @@ const template = (dataName: string, isAllowed?: boolean) => {
   return `
   <style>
     .request-permission {
-      border: 1px solid black;
       border-radius: 15px;
+      box-shadow: 0px 0px 5px 0px rgba(0 0 0 / 0.50);
       padding: 10px;
 
       background-color: white;
-      // position: absolute;
+
+      opacity: 1;
+      transition: opacity 5s ease-in-out;
     }
 
     .permission-title {
@@ -34,6 +36,7 @@ const template = (dataName: string, isAllowed?: boolean) => {
     <div class="permission-title">
       ${getPermissionIcon(dataName as Permissions)} <p>Trigger ${dataName}?</p>
     </div>
+    <slot name="reason"></slot>
     <button ${
       isAllowed === undefined ? "" : "disabled"
     } type="button" data-name"${dataName}" class="permission-trigger">${
@@ -44,7 +47,7 @@ const template = (dataName: string, isAllowed?: boolean) => {
 };
 
 export class RequestPermission extends HTMLElement {
-  static observedAttributes = ["request-reason", "permission-name"];
+  static observedAttributes = ["permission-name"];
 
   #permissionName!: Permissions;
   #isAllowed?: boolean = undefined;
@@ -57,7 +60,6 @@ export class RequestPermission extends HTMLElement {
 
   async connectedCallback() {
     const shadow = this.attachShadow({ mode: "open" });
-    const reasonForRequest = this.getAttribute("request-reason");
     const permissionName: Permissions | null = this.getAttribute(
       "permission-name",
     ) as Permissions;
@@ -69,10 +71,13 @@ export class RequestPermission extends HTMLElement {
     }
 
     this.#permissionName = permissionName;
-    this.#shadow = shadow;
 
     const permissionState = await getPermissionsState(permissionName)();
     this.#isAllowed = permissionState.allowed;
+
+    if (permissionState.allowed) {
+      return;
+    }
 
     this.render();
 
@@ -95,7 +100,7 @@ export class RequestPermission extends HTMLElement {
   }
 
   render() {
-    this.#shadow.innerHTML = template(
+    this.shadowRoot.innerHTML = template(
       this.#permissionName ?? "",
       this.#isAllowed,
     );

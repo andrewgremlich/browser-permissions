@@ -1,4 +1,4 @@
-import { Browser, Permissions } from "./types";
+import { AppPermission, Browser, Permissions } from "./types";
 
 // reference peices
 // https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API
@@ -7,37 +7,43 @@ import { Browser, Permissions } from "./types";
 // https://developer.mozilla.org/en-US/docs/Web/API/Permissions/revoke
 
 // TODO: make popup position configurable.
-const template = (styleOverridesSrc: string | null, permissionsRequest: Permissions[]) => {
+const template = (styleOverridesSrc: string | null, permissionsRequest: AppPermission[]) => {
   return `
   <style>
     :host {
-      position: fixed;
-      // bottom: 10px;
-      right: 10px;
-      z-index: 100000;
-      height: 75px;
-      width: 200px;
+      --browser-permission-width: 200px;
+      --browser-permission-height: 75px;
     }
 
-    .permissions-container {
-      // position: relative;
-      width: 100%;
-      height: 100%;
+    .request-reason {
+      font-size: 12px;
+    }
+
+    request-permission {
+      position: fixed;
+      bottom: var(--browser-permission-height);
+      height: var(--browser-permission-height);
+      width: var(--browser-permission-width);
+
+      right: -50px;
+      transition: right 0.5s ease-in-out;
     }
   </style>
 
   ${styleOverridesSrc ? `<link rel="stylesheet" href="${styleOverridesSrc}">` : ""}
 
   <div class="permissions-container">
-    ${permissionsRequest ? permissionsRequest.map((permission: Permissions) => {
-      return `<request-permission permission-name="${permission}"></request-permission>`;
-    }).join("") : ""}
+    ${permissionsRequest ? permissionsRequest.map((permission: AppPermission, index) =>
+    `<request-permission permission-name="${permission.name}" style="right: ${index * -10 + 40}px; opacity: ${1 - index * 0.1}; z-index: ${1000 - index}">
+      <p class="request-reason" slot="reason">${permission.reason}</p>
+    </request-permission>`
+  ).join("") : ""}
   </div>
 `}
 
 export class BrowserPermissions extends HTMLElement {
   static observedAttributes = ['style-overrides-src', 'browser-position'];
-  static permissions: Permissions[];
+  static permissions: AppPermission[];
 
   // biome-ignore lint/complexity/noUselessConstructor: This IS needed for HTMLElement inheritance
   constructor() {

@@ -84,6 +84,11 @@ export type Permissions =
   | (typeof FirefoxPermissions)[number]
   | (typeof ChromiumPermissions)[number];
 
+export type AppPermission = {
+  name: Permissions;
+  reason?: string;
+};
+
 export interface PermissionsResponse {
   name: Permissions;
   allowed?: boolean;

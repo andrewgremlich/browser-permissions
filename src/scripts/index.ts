@@ -1,6 +1,6 @@
 import { BrowserPermissions } from "./browser-permissions";
 import { RequestPermission } from "./request-permission";
-import { Permissions } from "./types";
+import { AppPermission, Permissions } from "./types";
 
 export * from "./permissions-helpers";
 
@@ -10,13 +10,12 @@ export * from "./permissions-helpers";
 // TOOD: UX to trigger all permissions at once.
 // TODO: Permissions policy may be set through headers... perhaps another feature
 // TODO: Add a feature to wrap query permissions in case in order to trigger permissions
-const permissions: Permissions[] = [
-  "microphone",
-  "camera",
-  "geolocation"
+const permissions: AppPermission[] = [
+  { name: "microphone", reason: "The microphone is used to record audio." },
+  { name: "geolocation", reason: "The snow button at the button uses your localized forecast." }
 ];
 
-export function makeBrowserPermissions(permissionsParam: Permissions[]) {
+export function makeBrowserPermissions(permissionsParam: AppPermission[]) {
   BrowserPermissions.permissions = permissionsParam;
 
   customElements.define("browser-permissions", BrowserPermissions);
