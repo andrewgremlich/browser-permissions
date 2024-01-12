@@ -6,15 +6,34 @@ import { Permissions } from "./types";
 const template = (dataName: string, isAllowed?: boolean) => {
   return `
   <style>
+    :host {
+      --browser-permission-width: 200px;
+    }
+
+    .fade-in {
+      right: 30px !important;
+      opacity: 1 !important;
+    }
+
+    .fade-out {
+      right: calc(0px - var(--browser-permission-width)) !important;
+      opacity: 0 !important;
+    }
+
     .request-permission {
+      position: fixed;
+      bottom: 30px;
+      width: var(--browser-permission-width);
+
+      right: calc(0px - var(--browser-permission-width));
+      transition: right 0.5s ease-in-out, opacity 0.5s ease-in-out;
+      opacity: 0;
+      
       border-radius: 15px;
       box-shadow: 0px 0px 5px 0px rgba(0 0 0 / 0.50);
       padding: 10px;
 
       background-color: white;
-
-      opacity: 1;
-      transition: opacity 5s ease-in-out;
     }
 
     .permission-title {
@@ -51,7 +70,6 @@ export class RequestPermission extends HTMLElement {
 
   #permissionName!: Permissions;
   #isAllowed?: boolean = undefined;
-  #shadow!: ShadowRoot;
 
   // biome-ignore lint/complexity/noUselessConstructor: This IS needed for HTMLElement inheritance
   constructor() {
@@ -66,7 +84,7 @@ export class RequestPermission extends HTMLElement {
 
     if (!permissionName) {
       throw new Error(
-        "'permission' attribute is required on permission-item element.",
+        "'permission-name' attribute is required on permission-item element.",
       );
     }
 
@@ -79,13 +97,32 @@ export class RequestPermission extends HTMLElement {
       return;
     }
 
-    this.render();
+    if (this.shadowRoot) {
+      this.shadowRoot.innerHTML = template(
+        this.#permissionName ?? "",
+        this.#isAllowed,
+      );
+    }
+
+    if (this.#isAllowed === undefined) {
+      this.activate();
+    }
 
     // there may need to be another component or feature to trigger with the user
     // tries to activate something that requires permissions.
     shadow
       .querySelector(".permission-trigger")
       ?.addEventListener("click", () => this.triggerPermission(permissionName));
+  }
+
+  activate() {
+    setTimeout(() => {
+      this.shadowRoot?.querySelector('.request-permission')?.classList.add("fade-in");
+    }, Math.random() * 1000);
+  }
+
+  deactivate() {
+    this.shadowRoot?.querySelector('.request-permission')?.classList.add("fade-out");
   }
 
   async triggerPermission(string: Permissions) {
@@ -96,13 +133,8 @@ export class RequestPermission extends HTMLElement {
     const permissionState = await getPermissionsState(this.#permissionName)();
     this.#isAllowed = permissionState.allowed;
 
-    this.render();
-  }
-
-  render() {
-    this.shadowRoot.innerHTML = template(
-      this.#permissionName ?? "",
-      this.#isAllowed,
-    );
+    if (this.#isAllowed) {
+      this.deactivate();
+    }
   }
 }
