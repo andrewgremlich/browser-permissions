@@ -41,16 +41,6 @@ export class BrowserPermissions extends HTMLElement {
     const positionInBrowser = this.getAttribute("browser-position");
 
     shadow.innerHTML = template(styleOverridesSrc, BrowserPermissions.permissions);
-
-    // this.activate();
-  }
-
-  activate() {
-    const shadow = this.shadowRoot;
-
-    setTimeout(() => {
-      shadow?.querySelector(".permissions-container")?.classList.add("fade-in");
-    }, 1000);
   }
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {

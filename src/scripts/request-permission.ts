@@ -56,10 +56,8 @@ const template = (dataName: string, isAllowed?: boolean) => {
       ${getPermissionIcon(dataName as Permissions)} <p>Trigger ${dataName}?</p>
     </div>
     <slot name="reason"></slot>
-    <button ${
-      isAllowed === undefined ? "" : "disabled"
-    } type="button" data-name"${dataName}" class="permission-trigger">${
-      isAllowed === undefined ? "Trigger" : isAllowed ? "Granted" : "Denied"
+    <button ${isAllowed === undefined ? "" : "disabled"
+    } type="button" data-name"${dataName}" class="permission-trigger">${isAllowed === undefined ? "Trigger" : isAllowed ? "Granted" : "Denied"
     }</button>
   </div>
   `;
@@ -70,6 +68,7 @@ export class RequestPermission extends HTMLElement {
 
   #permissionName!: Permissions;
   #isAllowed?: boolean = undefined;
+  #permissionTrigger!: HTMLButtonElement | null | undefined;
 
   // biome-ignore lint/complexity/noUselessConstructor: This IS needed for HTMLElement inheritance
   constructor() {
@@ -110,9 +109,9 @@ export class RequestPermission extends HTMLElement {
 
     // there may need to be another component or feature to trigger with the user
     // tries to activate something that requires permissions.
-    shadow
-      .querySelector(".permission-trigger")
-      ?.addEventListener("click", () => this.triggerPermission(permissionName));
+    this.#permissionTrigger = this.shadowRoot?.querySelector(".permission-trigger")
+
+    this.#permissionTrigger?.addEventListener("click", () => this.triggerPermission(permissionName));
   }
 
   activate() {
@@ -125,13 +124,37 @@ export class RequestPermission extends HTMLElement {
     this.shadowRoot?.querySelector('.request-permission')?.classList.add("fade-out");
   }
 
+  addLoadingIndicator() {
+    if (this.#permissionTrigger) {
+      this.#permissionTrigger?.setAttribute("disabled", "true");
+      this.#permissionTrigger?.classList.add("loading");
+      this.#permissionTrigger.innerText = "Loading...";
+    } else {
+      throw new Error("Permission trigger not found.");
+    }
+  }
+
+  removeLoadingIndicator() {
+    if (this.#permissionTrigger) {
+      this.#permissionTrigger?.removeAttribute("disabled");
+      this.#permissionTrigger?.classList.remove("loading");
+      this.#permissionTrigger.innerText = "Trigger";
+    } else {
+      throw new Error("Permission trigger not found.");
+    }
+  }
+
   async triggerPermission(string: Permissions) {
+    this.addLoadingIndicator();
+
     const result = await getPermissionQuery(string)();
 
     this.#isAllowed = result.allowed;
 
     const permissionState = await getPermissionsState(this.#permissionName)();
     this.#isAllowed = permissionState.allowed;
+
+    this.removeLoadingIndicator();
 
     if (this.#isAllowed) {
       this.deactivate();
