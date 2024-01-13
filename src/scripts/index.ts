@@ -11,8 +11,6 @@ export * from "~/permissions-helpers";
 
 
 // Permissions need to be done this way for typing.
-// TODO: add a "Deny" button to make the thing go away.
-
 // TODO: I should provide a way to do it through HTML if the user wants to. Put the permissions as HTML inside browser-permissions.
 // TOOD: UX to trigger all permissions at once.
 // TODO: Customize browser position through attribute.

@@ -13,8 +13,9 @@ import { template } from "./template";
 export class RequestPermission extends HTMLElement {
   static observedAttributes = ["permission-name"];
 
-  #permissionName!: Permissions;
   #isAllowed?: boolean = undefined;
+  #localStorageOverride!: boolean;
+  #permissionName!: Permissions;
   #permissionTrigger!: HTMLButtonElement | null | undefined;
   #hidePermissionTrigger!: HTMLButtonElement | null | undefined;
 
@@ -24,23 +25,23 @@ export class RequestPermission extends HTMLElement {
   }
 
   async connectedCallback() {
-    const shadow = this.attachShadow({ mode: "open" });
-    const permissionName: Permissions | null = this.getAttribute(
-      "permission-name",
-    ) as Permissions;
+    this.attachShadow({ mode: "open" });
 
-    if (!permissionName) {
-      throw new Error(
-        "'permission-name' attribute is required on permission-item element.",
-      );
+    const permissionState = await this.getPermissionState();
+
+    if (!localStorage[`${this.#permissionName}-deny`]) {
+      localStorage[`${this.#permissionName}-deny`] = false;
+    } else {
+      this.#localStorageOverride =
+        localStorage[`${this.#permissionName}-deny`] ===
+        "true";
     }
 
-    this.#permissionName = permissionName;
+    this.#isAllowed = this.#localStorageOverride
+      ? !this.#localStorageOverride
+      : permissionState.allowed;
 
-    const permissionState = await getPermissionsState(permissionName)();
-    this.#isAllowed = permissionState.allowed;
-
-    if (permissionState.allowed) {
+    if (this.#isAllowed) {
       return;
     }
 
@@ -55,21 +56,36 @@ export class RequestPermission extends HTMLElement {
       this.activate();
     }
 
-    // there may need to be another component or feature to trigger with the user
-    // tries to activate something that requires permissions.
     this.#permissionTrigger = this.shadowRoot?.querySelector(
       ".permission-trigger",
     );
-    this.#hidePermissionTrigger =
-      this.shadowRoot?.querySelector(".permission-deny");
 
     this.#permissionTrigger?.addEventListener("click", () =>
-      this.triggerPermission(permissionName),
+      this.triggerPermission(this.#permissionName),
     );
-    this.#hidePermissionTrigger?.addEventListener("click", () => {
-      console.log("hide the permission request!");
-      this.deactivate();
-    });
+
+    this.shadowRoot
+      ?.querySelector(".permission-deny")
+      ?.addEventListener("click", () => {
+        console.log("hide the permission request!");
+        this.deactivate();
+      });
+  }
+
+  async getPermissionState() {
+    const permissionName: Permissions | null = this.getAttribute(
+      "permission-name",
+    ) as Permissions;
+
+    if (!permissionName) {
+      throw new Error(
+        "'permission-name' attribute is required on permission-item element.",
+      );
+    }
+
+    this.#permissionName = permissionName;
+
+    return await getPermissionsState(permissionName)();
   }
 
   activate() {
@@ -81,6 +97,8 @@ export class RequestPermission extends HTMLElement {
   }
 
   deactivate() {
+    localStorage[`${this.#permissionName}-deny`] = true;
+
     this.shadowRoot
       ?.querySelector(".request-permission")
       ?.classList.add("fade-out");
@@ -100,7 +118,7 @@ export class RequestPermission extends HTMLElement {
     if (this.#permissionTrigger) {
       this.#permissionTrigger?.removeAttribute("disabled");
       this.#permissionTrigger?.classList.remove("loading");
-      this.#permissionTrigger.innerText = Check;
+      this.#permissionTrigger.innerHTML = Check;
     } else {
       throw new Error("Permission trigger not found.");
     }
