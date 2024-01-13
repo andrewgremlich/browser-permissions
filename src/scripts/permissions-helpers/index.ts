@@ -1,4 +1,4 @@
-import { Permissions, PermissionsResponse } from "../types";
+import { Permissions, PermissionsResponse } from "~/types";
 import {
   getScreenCapturePermissions,
   getCameraPermissions,

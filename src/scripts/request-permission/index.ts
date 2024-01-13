@@ -1,80 +1,13 @@
-import { getPermissionIcon, Check, Xmark } from "./icons";
-import { getPermissionQuery } from "./permissions-helpers";
-import { getPermissionsState } from "./permissions-helpers/helpers";
-import { Permissions } from "./types";
+import { Check, Loading } from "~/icons";
+import { getPermissionQuery } from "~/permissions-helpers";
+import { getPermissionsState } from "~/permissions-helpers/helpers";
+import { Permissions } from "~/types";
 
-/**
- *
- * @param dataName The name to ID the permission to display.
- * @param isAllowed To disable the buttons or not.
- * @returns An HTML template string for this web component.
- */
-const template = (dataName: string, isAllowed?: boolean) => {
-  return `
-  <style>
-    :host {
-      --browser-permission-width: 200px;
-    }
-
-    .fade-in {
-      right: 30px !important;
-      opacity: 1 !important;
-    }
-
-    .fade-out {
-      right: calc(0px - var(--browser-permission-width)) !important;
-      opacity: 0 !important;
-    }
-
-    .request-permission {
-      position: fixed;
-      bottom: 30px;
-      width: var(--browser-permission-width);
-
-      right: calc(0px - var(--browser-permission-width));
-      transition: right 0.5s ease-in-out, opacity 0.5s ease-in-out;
-      opacity: 0;
-      
-      border-radius: 15px;
-      box-shadow: 0px 0px 5px 0px rgba(0 0 0 / 0.50);
-      padding: 10px;
-
-      background-color: white;
-    }
-
-    .permission-title {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-
-      & > svg {
-        margin-right: 10px;
-      }
-    }
-
-    p {
-      margin: 0;
-    }
-  </style>
-
-  <div class="request-permission">
-    <div class="permission-title">
-      ${getPermissionIcon(dataName as Permissions)} <p>Trigger ${dataName}?</p>
-    </div>
-    <slot name="reason"></slot>
-    <button ${
-      isAllowed === undefined ? "" : "disabled"
-    } type="button" data-name"${dataName}" class="permission-trigger">${Check}
-    </button>
-    <button ${
-      isAllowed === undefined ? "" : "disabled"
-    }  type="button" class="permission-deny">${Xmark}</button>
-  </div>
-  `;
-};
+import { template } from "./template";
 
 /**
  * @attribute permission-name - The name of the permission to request.
+ * @type {Permissions}
  * @content reason - The reason for requesting the permission. To be displayed in the UI. Needs `slot="reason"` attribute.
  */
 export class RequestPermission extends HTMLElement {
@@ -157,7 +90,7 @@ export class RequestPermission extends HTMLElement {
     if (this.#permissionTrigger) {
       this.#permissionTrigger?.setAttribute("disabled", "true");
       this.#permissionTrigger?.classList.add("loading");
-      this.#permissionTrigger.innerText = "Loading...";
+      this.#permissionTrigger.innerHTML = Loading;
     } else {
       throw new Error("Permission trigger not found.");
     }
@@ -167,7 +100,7 @@ export class RequestPermission extends HTMLElement {
     if (this.#permissionTrigger) {
       this.#permissionTrigger?.removeAttribute("disabled");
       this.#permissionTrigger?.classList.remove("loading");
-      this.#permissionTrigger.innerText = "Trigger";
+      this.#permissionTrigger.innerText = Check;
     } else {
       throw new Error("Permission trigger not found.");
     }

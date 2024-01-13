@@ -1,4 +1,4 @@
-import { Permissions, PermissionsResponse } from "../types";
+import { Permissions, PermissionsResponse } from "~/types";
 
 export async function getCameraPermissions(): Promise<PermissionsResponse> {
   const stream = await navigator.mediaDevices.getUserMedia({ video: true });

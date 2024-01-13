@@ -1,8 +1,14 @@
-import { BrowserPermissions } from "./browser-permissions";
-import { RequestPermission } from "./request-permission";
-import { AppPermission, Permissions } from "./types";
+import { BrowserPermissions } from "~/browser-permissions";
+import { RequestPermission } from "~/request-permission";
+import { AppPermission, Permissions } from "~/types";
+export * from "~/permissions-helpers";
 
-export * from "./permissions-helpers";
+// reference peices
+// https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API
+// https://developer.mozilla.org/en-US/docs/Web/API/Permissions
+// https://developer.mozilla.org/en-US/docs/Web/API/Permissions/query
+// https://developer.mozilla.org/en-US/docs/Web/API/Permissions/revoke
+
 
 // Permissions need to be done this way for typing.
 // TODO: add a "Deny" button to make the thing go away.
@@ -10,11 +16,13 @@ export * from "./permissions-helpers";
 // TODO: I should provide a way to do it through HTML if the user wants to. Put the permissions as HTML inside browser-permissions.
 // TOOD: UX to trigger all permissions at once.
 // TODO: Customize browser position through attribute.
-// TODO: review override style options to be easy and document it.
 // TODO: Add a feature to wrap query permissions in case in order to trigger permissions
+
+
+// TODO: A "privacy summary" of the webpage like what Apple does for the app store.
 const permissions: AppPermission[] = [
   { name: "microphone", reason: "The microphone is used to record audio." },
-  { name: "geolocation", reason: "The snow button at the button uses your localized forecast." }
+  { name: "geolocation", reason: "The snow button at the button uses a localized forecast." }
 ];
 
 /**
