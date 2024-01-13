@@ -1,10 +1,3 @@
-export enum Browser {
-  Firefox = "Firefox",
-  Chromium = "Chromium",
-  WebKit = "WebKit",
-  Unknown = "Unknown",
-}
-
 // defined here https://searchfox.org/mozilla-central/source/dom/webidl/Permissions.webidl#10
 const FirefoxPermissions = [
   "geolocation",

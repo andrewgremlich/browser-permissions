@@ -1,7 +1,3 @@
-h2 {
-  color: red;
-}
-
-.browser-permissions-modal {
+request-permission p {
   background-color: darkred;
 }

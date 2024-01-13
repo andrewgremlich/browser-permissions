@@ -1,4 +1,4 @@
-import { AppPermission, Browser, Permissions } from "./types";
+import { AppPermission } from "./types";
 
 // reference peices
 // https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API
@@ -6,7 +6,12 @@ import { AppPermission, Browser, Permissions } from "./types";
 // https://developer.mozilla.org/en-US/docs/Web/API/Permissions/query
 // https://developer.mozilla.org/en-US/docs/Web/API/Permissions/revoke
 
-// TODO: make popup position configurable.
+/**
+ * 
+ * @param styleOverridesSrc An external stylesheet to override the default styles. The stylesheet must be relative to the html file.
+ * @param permissionsRequest A list of permissions to request an to render as request-permission web components.
+ * @returns 
+ */
 const template = (styleOverridesSrc: string | null, permissionsRequest: AppPermission[]) => {
   return `
   <style>
@@ -26,6 +31,10 @@ const template = (styleOverridesSrc: string | null, permissionsRequest: AppPermi
   </div>
 `}
 
+/**
+ * @attribute style-overrides-src - The URL to a stylesheet to override the default styles.
+ * @attribute browser-position - The position of the browser. Defaults to "bottom-right".
+ */
 export class BrowserPermissions extends HTMLElement {
   static observedAttributes = ['style-overrides-src', 'browser-position'];
   static permissions: AppPermission[];
@@ -45,23 +54,5 @@ export class BrowserPermissions extends HTMLElement {
 
   attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     // console.log(name, oldValue, newValue);
-  }
-
-  detectBrowser(): Browser {
-    const userAgent = navigator.userAgent;
-
-    if (userAgent.includes("Firefox")) {
-      return Browser.Firefox;
-    }
-
-    if (userAgent.includes("Chrome") || userAgent.includes("Chromium")) {
-      return Browser.Chromium;
-    }
-
-    if (userAgent.includes("WebKit")) {
-      return Browser.WebKit;
-    }
-
-    return Browser.Unknown;
   }
 }

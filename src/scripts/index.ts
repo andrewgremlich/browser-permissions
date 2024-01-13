@@ -15,6 +15,10 @@ const permissions: AppPermission[] = [
   { name: "geolocation", reason: "The snow button at the button uses your localized forecast." }
 ];
 
+/**
+ * Makes the browser-permissions and request-permission web components available.
+ * @param permissionsParam - { name: string, reason: string }[] Browser Permissions to request.
+ */
 export function makeBrowserPermissions(permissionsParam: AppPermission[]) {
   BrowserPermissions.permissions = permissionsParam;
 

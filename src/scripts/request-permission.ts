@@ -1,4 +1,4 @@
-import { getPermissionIcon } from "./icons";
+import { getPermissionIcon, Check, Xmark } from "./icons";
 import { getPermissionQuery } from "./permissions-helpers";
 import { getPermissionsState } from "./permissions-helpers/helpers";
 import { Permissions } from "./types";
@@ -56,13 +56,21 @@ const template = (dataName: string, isAllowed?: boolean) => {
       ${getPermissionIcon(dataName as Permissions)} <p>Trigger ${dataName}?</p>
     </div>
     <slot name="reason"></slot>
-    <button ${isAllowed === undefined ? "" : "disabled"
-    } type="button" data-name"${dataName}" class="permission-trigger">${isAllowed === undefined ? "Trigger" : isAllowed ? "Granted" : "Denied"
-    }</button>
+    <button ${
+      isAllowed === undefined ? "" : "disabled"
+    } type="button" data-name"${dataName}" class="permission-trigger">${Check}
+    </button>
+    <button type="button" class="permission-deny">${Xmark}</button>
   </div>
   `;
 };
 
+// TODO: add a "Deny" button to make the thing go away.
+
+/**
+ * @attribute permission-name - The name of the permission to request.
+ * @content reason - The reason for requesting the permission. To be displayed in the UI. Needs `slot="reason"` attribute.
+ */
 export class RequestPermission extends HTMLElement {
   static observedAttributes = ["permission-name"];
 
@@ -109,19 +117,27 @@ export class RequestPermission extends HTMLElement {
 
     // there may need to be another component or feature to trigger with the user
     // tries to activate something that requires permissions.
-    this.#permissionTrigger = this.shadowRoot?.querySelector(".permission-trigger")
+    this.#permissionTrigger = this.shadowRoot?.querySelector(
+      ".permission-trigger",
+    );
 
-    this.#permissionTrigger?.addEventListener("click", () => this.triggerPermission(permissionName));
+    this.#permissionTrigger?.addEventListener("click", () =>
+      this.triggerPermission(permissionName),
+    );
   }
 
   activate() {
     setTimeout(() => {
-      this.shadowRoot?.querySelector('.request-permission')?.classList.add("fade-in");
+      this.shadowRoot
+        ?.querySelector(".request-permission")
+        ?.classList.add("fade-in");
     }, Math.random() * 1000);
   }
 
   deactivate() {
-    this.shadowRoot?.querySelector('.request-permission')?.classList.add("fade-out");
+    this.shadowRoot
+      ?.querySelector(".request-permission")
+      ?.classList.add("fade-out");
   }
 
   addLoadingIndicator() {
