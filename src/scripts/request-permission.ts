@@ -3,6 +3,12 @@ import { getPermissionQuery } from "./permissions-helpers";
 import { getPermissionsState } from "./permissions-helpers/helpers";
 import { Permissions } from "./types";
 
+/**
+ * 
+ * @param dataName The name to ID the permission to display.
+ * @param isAllowed To disable the buttons or not.
+ * @returns An HTML template string for this web component.
+ */
 const template = (dataName: string, isAllowed?: boolean) => {
   return `
   <style>
@@ -60,12 +66,12 @@ const template = (dataName: string, isAllowed?: boolean) => {
       isAllowed === undefined ? "" : "disabled"
     } type="button" data-name"${dataName}" class="permission-trigger">${Check}
     </button>
-    <button type="button" class="permission-deny">${Xmark}</button>
+    <button ${
+      isAllowed === undefined ? "" : "disabled"
+    }  type="button" class="permission-deny">${Xmark}</button>
   </div>
   `;
 };
-
-// TODO: add a "Deny" button to make the thing go away.
 
 /**
  * @attribute permission-name - The name of the permission to request.

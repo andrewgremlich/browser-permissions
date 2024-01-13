@@ -5,6 +5,9 @@ import { AppPermission, Permissions } from "./types";
 export * from "./permissions-helpers";
 
 // Permissions need to be done this way for typing.
+// TODO: add a "Deny" button to make the thing go away.
+
+
 // TODO: I should provide a way to do it through HTML if the user wants to.
 // TODO: There's not really any typing for attributes on web components. Perhaps there's a way?
 // TOOD: UX to trigger all permissions at once.
