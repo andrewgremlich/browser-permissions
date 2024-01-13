@@ -4,7 +4,7 @@ import { getPermissionsState } from "./permissions-helpers/helpers";
 import { Permissions } from "./types";
 
 /**
- * 
+ *
  * @param dataName The name to ID the permission to display.
  * @param isAllowed To disable the buttons or not.
  * @returns An HTML template string for this web component.
@@ -83,6 +83,7 @@ export class RequestPermission extends HTMLElement {
   #permissionName!: Permissions;
   #isAllowed?: boolean = undefined;
   #permissionTrigger!: HTMLButtonElement | null | undefined;
+  #hidePermissionTrigger!: HTMLButtonElement | null | undefined;
 
   // biome-ignore lint/complexity/noUselessConstructor: This IS needed for HTMLElement inheritance
   constructor() {
@@ -126,10 +127,16 @@ export class RequestPermission extends HTMLElement {
     this.#permissionTrigger = this.shadowRoot?.querySelector(
       ".permission-trigger",
     );
+    this.#hidePermissionTrigger =
+      this.shadowRoot?.querySelector(".permission-deny");
 
     this.#permissionTrigger?.addEventListener("click", () =>
       this.triggerPermission(permissionName),
     );
+    this.#hidePermissionTrigger?.addEventListener("click", () => {
+      console.log("hide the permission request!");
+      this.deactivate();
+    });
   }
 
   activate() {

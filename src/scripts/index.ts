@@ -7,11 +7,10 @@ export * from "./permissions-helpers";
 // Permissions need to be done this way for typing.
 // TODO: add a "Deny" button to make the thing go away.
 
-
-// TODO: I should provide a way to do it through HTML if the user wants to.
-// TODO: There's not really any typing for attributes on web components. Perhaps there's a way?
+// TODO: I should provide a way to do it through HTML if the user wants to. Put the permissions as HTML inside browser-permissions.
 // TOOD: UX to trigger all permissions at once.
-// TODO: Permissions policy may be set through headers... perhaps another feature
+// TODO: Customize browser position through attribute.
+// TODO: review override style options to be easy and document it.
 // TODO: Add a feature to wrap query permissions in case in order to trigger permissions
 const permissions: AppPermission[] = [
   { name: "microphone", reason: "The microphone is used to record audio." },
