@@ -12,7 +12,7 @@
     "postbuild": "echo 'perhaps make a github action to test this NPM package?'",
     "check": "npx @biomejs/biome check --apply ./src/"
   },
-  "keywords": ["browser", "permissions", "handle", "wrapper"],
+  "keywords": ["browser", "permissions", "handler", "wrapper"],
   "author": "Andrew Gremlich",
   "license": "MIT",
   "devDependencies": {
