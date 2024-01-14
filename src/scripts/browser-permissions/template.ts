@@ -6,18 +6,16 @@ import { AppPermission } from "~/types";
  * @param permissionsRequest A list of permissions to request an to render as request-permission web components.
  * @returns 
  */
-export const template = (styleOverridesSrc: string | null, permissionsRequest: AppPermission[]) => {
+export const template = (permissionsRequest: AppPermission[]) => {
   return `
   <style>
     .request-reason {
-      font-size: 12px;
+      font-size: var(--r-p-reason-font-size, 12px);
     }
   </style>
 
-  ${styleOverridesSrc ? `<link rel="stylesheet" href="${styleOverridesSrc}">` : ""}
-
   <div class="permissions-container">
-    ${permissionsRequest ? permissionsRequest.map((permission: AppPermission, index) =>
+    ${permissionsRequest ? permissionsRequest.map((permission: AppPermission) =>
     `<request-permission permission-name="${permission.name}">
       ${permission.reason ? `<p class="request-reason" slot="reason">${permission.reason}</p>` : ""}
     </request-permission>`

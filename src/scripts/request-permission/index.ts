@@ -46,7 +46,7 @@ export class RequestPermission extends HTMLElement {
     }
 
     if (this.shadowRoot) {
-      this.shadowRoot.innerHTML = template(
+      this.shadowRoot.innerHTML = template(        
         this.#permissionName ?? "",
         this.#isAllowed,
       );

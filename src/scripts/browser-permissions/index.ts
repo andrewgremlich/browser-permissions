@@ -9,7 +9,6 @@ import { template } from "./template";
  * @type {string}
  */
 export class BrowserPermissions extends HTMLElement {
-  static observedAttributes = ['style-overrides-src', 'browser-position'];
   static permissions: AppPermission[];
 
   // biome-ignore lint/complexity/noUselessConstructor: This IS needed for HTMLElement inheritance
@@ -19,15 +18,11 @@ export class BrowserPermissions extends HTMLElement {
 
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "open" });
-    const styleOverridesSrc = this.getAttribute("style-overrides-src");
 
-    // TODO: this honestly should be some kind of CSS feature...
-    const positionInBrowser = this.getAttribute("browser-position");
-
-    shadow.innerHTML = template(styleOverridesSrc, BrowserPermissions.permissions);
+    shadow.innerHTML = template(BrowserPermissions.permissions);
   }
 
-  attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+  // attributeChangedCallback(name: string, oldValue: string, newValue: string) {
     // console.log(name, oldValue, newValue);
-  }
+  // }
 }
