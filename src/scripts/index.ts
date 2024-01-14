@@ -1,6 +1,5 @@
 import { BrowserPermissions } from "~/browser-permissions";
 import { RequestPermission } from "~/request-permission";
-export * from "~/permissions-helpers";
 
 // reference peices
 // https://developer.mozilla.org/en-US/docs/Web/API/Permissions_API

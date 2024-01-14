@@ -78,7 +78,8 @@ export const getPermissionsState =
 
 export const getMidiAccess = async (): Promise<PermissionsResponse> => {
   try {
-    const access = await navigator.requestMIDIAccess();
+    await navigator.requestMIDIAccess();
+
     return { name: "midi", allowed: true };
   } catch (error) {
     return { name: "midi", allowed: false };
