@@ -17,7 +17,6 @@ export class RequestPermission extends HTMLElement {
   #localStorageOverride!: boolean;
   #permissionName!: Permissions;
   #permissionTrigger!: HTMLButtonElement | null | undefined;
-  #hidePermissionTrigger!: HTMLButtonElement | null | undefined;
 
   // biome-ignore lint/complexity/noUselessConstructor: This IS needed for HTMLElement inheritance
   constructor() {
@@ -33,8 +32,7 @@ export class RequestPermission extends HTMLElement {
       localStorage[`${this.#permissionName}-deny`] = false;
     } else {
       this.#localStorageOverride =
-        localStorage[`${this.#permissionName}-deny`] ===
-        "true";
+        localStorage[`${this.#permissionName}-deny`] === "true";
     }
 
     this.#isAllowed = this.#localStorageOverride
@@ -46,7 +44,7 @@ export class RequestPermission extends HTMLElement {
     }
 
     if (this.shadowRoot) {
-      this.shadowRoot.innerHTML = template(        
+      this.shadowRoot.innerHTML = template(
         this.#permissionName ?? "",
         this.#isAllowed,
       );
@@ -97,7 +95,9 @@ export class RequestPermission extends HTMLElement {
   }
 
   deactivate() {
-    localStorage[`${this.#permissionName}-deny`] = true;
+    localStorage[`${this.#permissionName}-deny`] = this.#isAllowed
+      ? false
+      : true;
 
     this.shadowRoot
       ?.querySelector(".request-permission")

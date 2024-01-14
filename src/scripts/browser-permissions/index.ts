@@ -9,7 +9,7 @@ import { template } from "./template";
  * @type {string}
  */
 export class BrowserPermissions extends HTMLElement {
-  static permissions: AppPermission[];
+  permissions!: AppPermission[];
 
   // biome-ignore lint/complexity/noUselessConstructor: This IS needed for HTMLElement inheritance
   constructor() {
@@ -19,10 +19,22 @@ export class BrowserPermissions extends HTMLElement {
   connectedCallback() {
     const shadow = this.attachShadow({ mode: "open" });
 
-    shadow.innerHTML = template(BrowserPermissions.permissions);
+    this.permissions = JSON.parse(
+      this.querySelector("#browser-permission-data")?.textContent || "[]",
+    );
+
+    this.errorCheck();
+
+    shadow.innerHTML = template(this.permissions);
+  }
+
+  errorCheck() {
+    if (this.permissions.length === 0) {
+      throw new Error("No permissions data provided.");
+    }
   }
 
   // attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-    // console.log(name, oldValue, newValue);
+  // console.log(name, oldValue, newValue);
   // }
 }
