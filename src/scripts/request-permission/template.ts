@@ -11,11 +11,15 @@ export const template = (dataName: string, isAllowed?: boolean) => {
   return `
   <style>
     .request-permission {
-      position: fixed;
-      bottom: 30px;
       width: var(--r-p-width, 200px);
+      
+      position: fixed;
+      bottom: var(--r-p-bottom, 30px);
+      top: var(--r-p-top, initial);
 
-      right: calc(0px - var(--r-p-width, 200px));
+      left: var(--r-p-left-start, initial);
+      right: var(--r-p-right-start, initial);
+
       transition: right 0.5s ease-in-out, opacity 0.5s ease-in-out;
       opacity: 0;
       
@@ -24,6 +28,21 @@ export const template = (dataName: string, isAllowed?: boolean) => {
       padding: 10px;
 
       background-color: var(--r-p-background-color, #fff);
+    }
+
+    .fade-in {
+      left: var(--r-p-left-end, initial) !important;
+      right: var(--r-p-right-end, initial) !important;
+
+      top: var(--r-p-top, initial) !important;
+      bottom: var(--r-p-bottom, initial) !important;
+
+      opacity: 1 !important;
+    }
+
+    .fade-out {
+      right: calc(0px - var(--r-p-width, 200px)) !important;
+      opacity: 0 !important;
     }
     
     button {
@@ -46,16 +65,6 @@ export const template = (dataName: string, isAllowed?: boolean) => {
         opacity: 0.5;
         cursor: not-allowed;
       }
-    }
-
-    .fade-in {
-      right: 30px !important;
-      opacity: 1 !important;
-    }
-
-    .fade-out {
-      right: calc(0px - var(--r-p-width, 200px)) !important;
-      opacity: 0 !important;
     }
 
     .loading {

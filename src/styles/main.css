@@ -10,4 +10,13 @@
   --r-p-title-font-size: 1.2rem;
   --r-p-title-icon-size: 1.2rem;
   --r-p-reason-font-size: 19px;
+
+  --r-p-bottom: 30px;
+  --r-p-top: initial;
+  
+  --r-p-right-start: -230px;
+  --r-p-right-end: 30px;
+
+  --r-p-left-start: initial;
+  --r-p-left-end: initial;
 }
