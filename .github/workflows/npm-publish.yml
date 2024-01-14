@@ -1,0 +1,26 @@
+name: NPM Release
+on:
+  release:
+    types: [published]
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+
+      - name: setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18.x"
+          registry-url: https://registry.npmjs.org
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: build package
+        run: npm build
+
+      - name: publish package npm
+        run: npm publish
