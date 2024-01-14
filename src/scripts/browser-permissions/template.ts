@@ -11,6 +11,7 @@ export const template = (permissionsRequest: AppPermission[]) => {
   <style>
     .request-reason {
       font-size: var(--r-p-reason-font-size, 12px);
+      color: var(--r-p-font-color, #000);
     }
   </style>
 

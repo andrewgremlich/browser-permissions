@@ -75,6 +75,7 @@ export const template = (dataName: string, isAllowed?: boolean) => {
 
     .permission-title {
       font-size: var(--r-p-title-font-size, 20px);
+      color: var(--r-p-font-color, #000);
       display: flex;
       align-items: center;
       margin-bottom: 10px;
