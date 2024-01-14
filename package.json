@@ -1,8 +1,8 @@
 {
   "name": "browser-permissions",
-  "version": "0.0.1",
-  "description": "An interactive module for handling browser permissions",
-  "source": "./src/scripts/browser-permissions.ts",
+  "version": "1.0.0",
+  "description": "A drop-in component to aid a website application's user experience in handling browser permissions.",
+  "source": "src/scripts/index.ts",
   "main": "dist/main.js",
   "module": "dist/module.js",
   "types": "dist/types.d.ts",
@@ -12,9 +12,9 @@
     "postbuild": "echo 'perhaps make a github action to test this NPM package?'",
     "check": "npx @biomejs/biome check --apply ./src/"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": ["browser", "permissions", "handle", "wrapper"],
+  "author": "Andrew Gremlich",
+  "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "^1.5.1",
     "@parcel/packager-ts": "^2.11.0",

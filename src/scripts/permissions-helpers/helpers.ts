@@ -116,13 +116,13 @@ export async function getStorageAccessPermissions(): Promise<PermissionsResponse
   }
 }
 
-export const getWindowManagementPermissions: (
-  permissionName: "window-management" | "window-placement",
-) => () => Promise<PermissionsResponse> = (permissionName) => async () => {
-  try {
-    await window.getScreenDetails();
-    return { allowed: true, name: permissionName };
-  } catch (error) {
-    return { allowed: false, name: permissionName };
-  }
-};
+// export const getWindowManagementPermissions: (
+//   permissionName: "window-management" | "window-placement",
+// ) => () => Promise<PermissionsResponse> = (permissionName) => async () => {
+//   try {
+//     await window.getScreenDetails();
+//     return { allowed: true, name: permissionName };
+//   } catch (error) {
+//     return { allowed: false, name: permissionName };
+//   }
+// };

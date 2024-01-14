@@ -8,7 +8,6 @@ import {
   getMidiAccess,
   getClipboardReadPermissions,
   getClipboardWritePermissions,
-  getWindowManagementPermissions,
   getStorageAccessPermissions,
 } from "./helpers";
 
@@ -25,8 +24,6 @@ export const getPermissionQuery = (
       "display-capture": getScreenCapturePermissions,
       "clipboard-read": getClipboardReadPermissions,
       "clipboard-write": getClipboardWritePermissions,
-      "window-management": getWindowManagementPermissions("window-management"),
-      "window-placement": getWindowManagementPermissions("window-placement"),
       "persistent-storage": getStorageAccessPermissions,
       "top-level-storage-access": getStorageAccessPermissions,
       "storage-access": getStorageAccessPermissions,
@@ -135,6 +132,18 @@ export const getPermissionQuery = (
       bluetooth: () =>
         Promise.resolve({
           name: "bluetooth",
+          allowed: false,
+          error: "Not implemented",
+        }),
+      "window-management": () =>
+        Promise.resolve({
+          name: "window-management",
+          allowed: false,
+          error: "Not implemented",
+        }),
+      "window-placement": () =>
+        Promise.resolve({
+          name: "window-placement",
           allowed: false,
           error: "Not implemented",
         }),

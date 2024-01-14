@@ -60,8 +60,6 @@ This module aims to support different permissions across each browser. Here is a
 - display-capture
 - clipboard-read
 - clipboard-write
-- window-management
-- window-placement
 - persistent-storage
 - top-level-storage-access
 - storage-access
