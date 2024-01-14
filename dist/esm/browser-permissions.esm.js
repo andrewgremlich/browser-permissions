@@ -447,10 +447,9 @@ class u extends HTMLElement {
   }
 }
 r = new WeakMap(), m = new WeakMap(), c = new WeakMap(), n = new WeakMap(), h(u, "observedAttributes", ["permission-name"]);
-function $() {
+function T() {
   customElements.define("browser-permissions", L), customElements.define("request-permission", u);
 }
-$();
 export {
-  $ as makeBrowserPermissions
+  T as makeBrowserPermissions
 };
