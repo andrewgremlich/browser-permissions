@@ -4,7 +4,7 @@ on:
     types: [published]
 jobs:
   build:
-    name: Build
+    name: Publish to NPM
     runs-on: ubuntu-latest
     steps:
       - name: checkout repository
@@ -16,13 +16,10 @@ jobs:
           node-version: "20.x"
           registry-url: https://registry.npmjs.org
 
-      - name: install dependencies
-        run: npm ci
+      - name: install dependencies and build
+        run: npm i && npm run build
 
-      - name: build package
-        run: npm run build
-
-      - name: publish package npm
+      - name: publish package to npm
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_PUBLISH }}
