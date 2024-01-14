@@ -15,5 +15,3 @@ export function makeBrowserPermissions() {
   customElements.define("browser-permissions", BrowserPermissions);
   customElements.define("request-permission", RequestPermission);
 }
-
-makeBrowserPermissions();
