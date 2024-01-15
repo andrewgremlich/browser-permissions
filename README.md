@@ -11,7 +11,7 @@ Within the `browser-permissions` web component, place a script tag with an type 
 The component `browser-permissions` will do an error check for if any JSON data was inputted.
 
 ```html
-<browser-perWmissions>
+<browser-permissions>
   <script type="application/json" id="browser-permission-data">
     [
       { "name": "microphone", "reason": "The microphone is used to record a song." },
@@ -116,7 +116,7 @@ This module aims to support different permissions across each browser. Here is a
 <script type="importmap">
   {
     "imports": {
-      "browser-permissions": "https://unpkg.com/browser-permissions@1.0.9/dist/esm/browser-permissions.esm.js"
+      "browser-permissions": "https://unpkg.com/browser-permissions@1.0.12/dist/esm/browser-permissions.esm.js"
     }
   }
 </script>
