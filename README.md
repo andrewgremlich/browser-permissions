@@ -69,12 +69,12 @@ This module aims to support different permissions across each browser. Here is a
 
 ### v1.1
 
-- [ ] Trigger all permissions at once.
-- [ ] Provide a typescript way to input permission data.
+- [ ] Add a feature to wrap query permissions in case in order to trigger permissions
 
 ### v1.2
 
-- [ ] Add a feature to wrap query permissions in case in order to trigger permissions
+- [ ] Trigger all permissions at once.
+- [ ] Provide a typescript way to input permission data.
 
 ### v1.3
 
