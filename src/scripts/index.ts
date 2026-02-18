@@ -12,6 +12,6 @@ import { RequestPermission } from "~/request-permission";
  * @param permissionsParam - { name: string, reason: string }[] Browser Permissions to request.
  */
 export function makeBrowserPermissions() {
-  customElements.define("browser-permissions", BrowserPermissions);
-  customElements.define("request-permission", RequestPermission);
+	customElements.define("browser-permissions", BrowserPermissions);
+	customElements.define("request-permission", RequestPermission);
 }

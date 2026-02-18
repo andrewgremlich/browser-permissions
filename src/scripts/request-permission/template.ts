@@ -1,5 +1,5 @@
-import { getPermissionIcon, Check, Xmark } from "~/icons";
-import { Permissions } from "~/types";
+import { Check, getPermissionIcon, Xmark } from "~/icons";
+import type { Permissions } from "~/types";
 
 /**
  *
@@ -8,7 +8,7 @@ import { Permissions } from "~/types";
  * @returns An HTML template string for this web component.
  */
 export const template = (dataName: string, isAllowed?: boolean) => {
-  return `
+	return `
   <style>
     .request-permission {
       width: var(--r-p-width, 200px);
@@ -103,12 +103,12 @@ export const template = (dataName: string, isAllowed?: boolean) => {
     </div>
     <slot name="reason"></slot>
     <button ${
-      isAllowed === undefined ? "" : "disabled"
-    } type="button" data-name"${dataName}" class="permission-trigger">${Check}
+			isAllowed === undefined ? "" : "disabled"
+		} type="button" data-name"${dataName}" class="permission-trigger">${Check}
     </button>
     <button ${
-      isAllowed === undefined ? "" : "disabled"
-    }  type="button" class="permission-deny">${Xmark}</button>
+			isAllowed === undefined ? "" : "disabled"
+		}  type="button" class="permission-deny">${Xmark}</button>
   </div>
   `;
 };

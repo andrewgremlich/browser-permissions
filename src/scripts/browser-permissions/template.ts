@@ -1,13 +1,13 @@
-import { AppPermission } from "~/types";
+import type { AppPermission } from "~/types";
 
 /**
- * 
+ *
  * @param styleOverridesSrc An external stylesheet to override the default styles. The stylesheet must be relative to the html file.
  * @param permissionsRequest A list of permissions to request an to render as request-permission web components.
- * @returns 
+ * @returns
  */
 export const template = (permissionsRequest: AppPermission[]) => {
-  return `
+	return `
   <style>
     .request-reason {
       font-size: var(--r-p-reason-font-size, 12px);
@@ -16,10 +16,18 @@ export const template = (permissionsRequest: AppPermission[]) => {
   </style>
 
   <div class="permissions-container">
-    ${permissionsRequest ? permissionsRequest.map((permission: AppPermission) =>
-    `<request-permission permission-name="${permission.name}">
+    ${
+			permissionsRequest
+				? permissionsRequest
+						.map(
+							(permission: AppPermission) =>
+								`<request-permission permission-name="${permission.name}">
       ${permission.reason ? `<p class="request-reason" slot="reason">${permission.reason}</p>` : ""}
-    </request-permission>`
-  ).join("") : ""}
+    </request-permission>`,
+						)
+						.join("")
+				: ""
+		}
   </div>
-`}
+`;
+};

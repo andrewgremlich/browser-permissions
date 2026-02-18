@@ -1,4 +1,4 @@
-import { AppPermission } from "~/types";
+import type { AppPermission } from "~/types";
 
 import { template } from "./template";
 
@@ -9,32 +9,32 @@ import { template } from "./template";
  * @type {string}
  */
 export class BrowserPermissions extends HTMLElement {
-  permissions!: AppPermission[];
+	permissions!: AppPermission[];
 
-  // biome-ignore lint/complexity/noUselessConstructor: This IS needed for HTMLElement inheritance
-  constructor() {
-    super();
-  }
+	// biome-ignore lint/complexity/noUselessConstructor: This IS needed for HTMLElement inheritance
+	constructor() {
+		super();
+	}
 
-  connectedCallback() {
-    const shadow = this.attachShadow({ mode: "open" });
+	connectedCallback() {
+		const shadow = this.attachShadow({ mode: "open" });
 
-    this.permissions = JSON.parse(
-      this.querySelector("#browser-permission-data")?.textContent || "[]",
-    );
+		this.permissions = JSON.parse(
+			this.querySelector("#browser-permission-data")?.textContent || "[]",
+		);
 
-    this.errorCheck();
+		this.errorCheck();
 
-    shadow.innerHTML = template(this.permissions);
-  }
+		shadow.innerHTML = template(this.permissions);
+	}
 
-  errorCheck() {
-    if (this.permissions.length === 0) {
-      throw new Error("No permissions data provided.");
-    }
-  }
+	errorCheck() {
+		if (this.permissions.length === 0) {
+			throw new Error("No permissions data provided.");
+		}
+	}
 
-  // attributeChangedCallback(name: string, oldValue: string, newValue: string) {
-  // console.log(name, oldValue, newValue);
-  // }
+	// attributeChangedCallback(name: string, oldValue: string, newValue: string) {
+	// console.log(name, oldValue, newValue);
+	// }
 }
